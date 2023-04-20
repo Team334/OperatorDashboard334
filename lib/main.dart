@@ -5,7 +5,7 @@ void main() {
 }
 
 class OperatorDashboard334 extends StatelessWidget {
-  const OperatorDashboard334({Key? key}) : super(key: key);
+  const OperatorDashboard334({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,17 +31,16 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-   int count = 0;
-   int increment = 1;
+  int count = 0;
+  int increment = 1;
 
-    void incrementCounter() {
+  void incrementCounter() {
     setState(() {
       count += increment;
     });
   }
 
-  
-    void incrementAdder() {
+  void incrementAdder() {
     setState(() {
       increment++;
     });
@@ -56,25 +55,24 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SelectableText(
-           'Button Clicks - ${count}',
-             textAlign: TextAlign.center,
-             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            'Button Clicks - $count',
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
             style: style,
             onPressed: () => {incrementCounter()},
-            child: new Text('Click Me!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50)), 
+            child: const Text('Click Me!',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50)),
           ),
-          Icon(
-            null
-            ),
+          const Icon(null),
           ElevatedButton(
             style: style,
             onPressed: () => {incrementAdder()},
-            child: new Text('+', 
-            textAlign:  TextAlign.justify,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50)),
+            child: const Text('+',
+                textAlign: TextAlign.justify,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50)),
           ),
         ],
       ),
