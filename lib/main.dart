@@ -31,29 +31,53 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+   int count = 0;
+   int increment = 1;
+
+    void incrementCounter() {
+    setState(() {
+      count += increment;
+    });
+  }
+
+  
+    void incrementAdder() {
+    setState(() {
+      increment++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final ButtonStyle style =
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
-
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ElevatedButton(
-            style: style,
-            onPressed: null,
-            child: const Text('Disabled'),
+          SelectableText(
+           'Button Clicks - ${count}',
+             textAlign: TextAlign.center,
+             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           ElevatedButton(
             style: style,
-            onPressed: () {},
-            child: const Text('Enabled'),
+            onPressed: () => {incrementCounter()},
+            child: new Text('Click Me!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50)), 
+          ),
+          Icon(
+            null
+            ),
+          ElevatedButton(
+            style: style,
+            onPressed: () => {incrementAdder()},
+            child: new Text('+', 
+            textAlign:  TextAlign.justify,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50)),
           ),
         ],
       ),
     );
   }
 }
-
