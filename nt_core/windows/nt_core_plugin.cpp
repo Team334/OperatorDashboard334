@@ -53,6 +53,7 @@ std::string NtCorePlugin::getPlatformVersion(){
 void NtCorePlugin::HandleMethodCall(
     const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+      
   if (method_call.method_name().compare("getPlatformVersion") == 0) {
     result->Success(flutter::EncodableValue(getPlatformVersion()));
   } else {

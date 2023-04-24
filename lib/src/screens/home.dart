@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:nt_core/nt_core.dart';
 
@@ -9,9 +11,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
-  int count = 0;
-  int increment = 1;
-  String? platformVersion = "";
+  int _count = 0;
+  int _increment = 1;
+  String _platformVersion = "";
+
+  final NtCore _ntCore = NtCore();
 
   @override
   void initState() {
@@ -20,23 +24,26 @@ class _HomeState extends State<HomeScreen> {
   }
 
   Future<void> initPlatformState() async {
-    String? a = await NtCore().getPlatformVersion();
+    String? platformVersion = await _ntCore.getPlatformVersion();
+
+    if (platformVersion == null) {
+      return;
+    }
+
     setState(() {
-      platformVersion = a;
-      print("Version: ");
-      print(a);
+      _platformVersion = platformVersion;
     });
   }
 
   void incrementCounter() {
     setState(() {
-      count += increment;
+      _count += _increment;
     });
   }
 
   void incrementAdder() {
     setState(() {
-      increment++;
+      _increment++;
     });
   }
 
@@ -50,7 +57,7 @@ class _HomeState extends State<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SelectableText(
-            'Button Clicks - $count',
+            'Button Clicks - $_count',
             textAlign: TextAlign.center,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),

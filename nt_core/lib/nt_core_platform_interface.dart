@@ -25,6 +25,5 @@ abstract class NtCorePlatform extends PlatformInterface {
 
   Future<String?> getPlatformVersion() {
     return _instance.getPlatformVersion();
-    // throw UnimplementedError('platformVersion() has not been implemented.');
   }
 }
