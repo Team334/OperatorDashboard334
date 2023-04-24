@@ -118,7 +118,7 @@ packages:
   nt_core:
     dependency: "direct main"
     description:
-      path: nt_core
+      path: ".."
       relative: true
     source: path
     version: "0.0.1"
