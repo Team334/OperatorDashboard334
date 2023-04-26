@@ -1,7 +1,12 @@
 import 'dart:ffi';
+import 'dart:io';
 
+import 'package:ffi/ffi.dart';
+import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
-import 'package:nt_core/nt_core.dart';
+import 'nt_bindings.dart' as nt;
+
+final ntcore = nt.NativeLibrary(DynamicLibrary.open(_getPath()));
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,26 +18,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeState extends State<HomeScreen> {
   int _count = 0;
   int _increment = 1;
-  String _platformVersion = "";
 
-  final NtCore _ntCore = NtCore();
+  final _networkTablesInst = ntcore.NT_GetDefaultInstance();
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-  }
-
-  Future<void> initPlatformState() async {
-    String? platformVersion = await _ntCore.getPlatformVersion();
-
-    if (platformVersion == null) {
-      return;
-    }
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+    ntcore.NT_StartServer(
+        _networkTablesInst,
+        "".toNativeUtf8().cast<Char>(),
+        "".toNativeUtf8().cast<Char>(),
+        nt.NT_DEFAULT_PORT3,
+        nt.NT_DEFAULT_PORT4);
   }
 
   void incrementCounter() {
@@ -86,4 +83,16 @@ class _HomeState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+String _getPath() {
+  var path = Directory.current.absolute.path;
+  if (Platform.isMacOS) {
+    path = p.join(path, 'libntcore.dylib');
+  } else if (Platform.isWindows) {
+    path = p.join(path, 'libntcore.dll');
+  } else if (Platform.isLinux) {
+    path = p.join(path, 'libntcore.so');
+  }
+  return path;
 }
