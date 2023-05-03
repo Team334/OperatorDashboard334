@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
   int _count = 0;
-  int _increment = 1;
+  int _increment = 1; 
 
   final _networkTablesInst = ntcore.NT_GetDefaultInstance();
 
