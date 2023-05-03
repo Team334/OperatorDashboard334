@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:ffi/ffi.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
-import 'nt_bindings.dart' as nt;
+import '../nt_bindings.dart' as nt;
 
 final ntcore = nt.NativeLibrary(DynamicLibrary.open(_getPath()));
 
@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
   int _count = 0;
-  int _increment = 1; 
+  int _increment = 1;
 
   final _networkTablesInst = ntcore.NT_GetDefaultInstance();
 
