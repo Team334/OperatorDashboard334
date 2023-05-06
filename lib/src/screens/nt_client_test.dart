@@ -16,11 +16,12 @@ class _NtClientTestState extends State<NtClientTest> {
   @override
   void initState() {
     super.initState();
-    http.get(Uri.parse('http://localhost:8000/startNtClient'), headers: {"team": "334"}).then(
-      (res) => {
-        serverMessage = jsonDecode(res.body)['message']
-      }
-    );
+    http
+        .get(
+          Uri.http('localhost:8000', '/', {}),
+        )
+        .then((res) =>
+            setState(() => serverMessage = res.body));
   }
 
   @override
