@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import '../nt_client.dart' as nt;
 
@@ -13,14 +10,11 @@ class NtClientTest extends StatefulWidget {
 }
 
 class _NtClientTestState extends State<NtClientTest> {
-  String serverMessage = "";
+  nt.ServerResponse serverRes = nt.ServerResponse("", false);
 
   @override
   void initState() {
     super.initState();
-    nt
-        .startNtClient(334)
-        .then((res) => setState(() => serverMessage = res.message));
   }
 
   @override
@@ -31,17 +25,17 @@ class _NtClientTestState extends State<NtClientTest> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
           Row(children: [
-            const Text("Hello"),
+            const Text("Start NT Client: "),
             ElevatedButton(
-                onPressed: () => {
-                      setState(() async => {await nt.startNtClient(334)})
-                    },
-                child: const Text("World"))
+                onPressed: () async {
+                  nt.ServerResponse res = await nt.startNtClient(334);
+                  setState(() {
+                    serverRes = res;
+                  });
+                },
+                child: const Text("Click Me!")),
+            Text(serverRes.message),
           ]),
-          Row(children: [
-            const Text("World"),
-            ElevatedButton(onPressed: () => {}, child: const Text("World"))
-          ])
         ]));
   }
 }
