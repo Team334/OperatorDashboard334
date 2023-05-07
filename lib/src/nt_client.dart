@@ -28,11 +28,11 @@ class ServerResponse {
   }
 }
 
-Future<ServerResponse> startNtClient(String team) async {
+Future<ServerResponse> startNtClient(int team) async {
   return ServerResponse.fromJson((await http.get(Uri.http(
     'localhost:8000',
     '/startNtClient',
-    {"team": team}
+    {"team": team.toString()}
   ))).body);
 }
 

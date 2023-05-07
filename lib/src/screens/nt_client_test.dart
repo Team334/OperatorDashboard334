@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../nt_client.dart' as nt;
+
 class NtClientTest extends StatefulWidget {
   const NtClientTest({super.key});
 
@@ -16,16 +18,30 @@ class _NtClientTestState extends State<NtClientTest> {
   @override
   void initState() {
     super.initState();
-    http
-        .get(
-          Uri.http('localhost:8000', '/', {}),
-        )
-        .then((res) =>
-            setState(() => serverMessage = res.body));
+    nt
+        .startNtClient(334)
+        .then((res) => setState(() => serverMessage = res.message));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text(serverMessage);
+    return Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+          Row(children: [
+            const Text("Hello"),
+            ElevatedButton(
+                onPressed: () => {
+                      setState(() async => {await nt.startNtClient(334)})
+                    },
+                child: const Text("World"))
+          ]),
+          Row(children: [
+            const Text("World"),
+            ElevatedButton(onPressed: () => {}, child: const Text("World"))
+          ])
+        ]));
   }
 }
