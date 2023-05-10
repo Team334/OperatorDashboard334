@@ -28,27 +28,29 @@ class ServerResponse {
   }
 }
 
-Future<ServerResponse> startNtClient(int team) async {
-  return ServerResponse.fromJson((await http.get(Uri.http(
-    'localhost:8000',
-    '/startNtClient',
-    {"team": team.toString()}
-  ))).body);
-}
+class NTClient {
+  static Future<ServerResponse> startNtClient(int team) async {
+    return ServerResponse.fromJson((await http.get(Uri.http(
+            'localhost:8000', '/startNtClient', {"team": team.toString()})))
+        .body);
+  }
 
-Future<ServerResponse> setTopic<T>(
-    String name, T value, ServerType type) async {
-  return ServerResponse.fromJson((await http.get(Uri.http(
-          'localhost:8000',
-          '/setTopic',
-          {"value": value, "type": describeEnum(type), "name": name})))
-      .body);
-}
+  static Future<ServerResponse> setTopic(
+      String name, dynamic value, ServerType type) async {
+    return ServerResponse.fromJson((await http.get(Uri.http(
+            'localhost:8000',
+            '/setTopic',
+            {"value": value, "type": describeEnum(type), "name": name})))
+        .body);
+  }
 
-Future<ServerResponse> getTopic(String name, ServerType type) async {
-  return ServerResponse.fromJson(
-      (await http.get(Uri.http('localhost:8000', '/getTopic', {
-        "name": name,
-        "type": describeEnum(type)
-      }))).body);
+  static Future<ServerResponse> getTopic(String name, ServerType type) async {
+    ServerResponse res = ServerResponse.fromJson((await http.get(Uri.http(
+            'localhost:8000',
+            '/getTopic',
+            {"name": name, "type": describeEnum(type)})))
+        .body);
+
+    return res;
+  }
 }
