@@ -127,6 +127,7 @@ class _NtClientTestState extends State<NtClientTest> {
                       await NtClient.getTopic(getTopicName, getValType);
                   setState(() {
                     serverRes = res;
+                    print(serverRes.data);
                     messageNum++;
                   });
                 },
