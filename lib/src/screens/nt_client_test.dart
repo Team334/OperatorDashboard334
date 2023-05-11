@@ -14,8 +14,12 @@ class _NtClientTestState extends State<NtClientTest> {
   ServerType setValType = ServerType.string;
   ServerType getValType = ServerType.string;
 
+  String setTopicValue = "";
+
   String setTopicName = "";
   String getTopicName = "";
+
+  int messageNum = 0;
 
   @override
   void initState() {
@@ -33,11 +37,13 @@ class _NtClientTestState extends State<NtClientTest> {
             const Text("Start NT Client"),
             ElevatedButton(
                 onPressed: () async {
-                  ServerResponse res = await NTClient.startNtClient(334);
-                  setState(() => serverRes = res);
+                  ServerResponse res = await NtClient.startNtClient(334);
+                  setState(() {
+                    serverRes = res;
+                    messageNum++;
+                  });
                 },
-                child: const Text("Click Me!")),
-            Text(serverRes.message),
+                child: const Text("Click Me!"))
           ]),
           Row(children: [
             const Text("Set Topic"),
@@ -54,36 +60,83 @@ class _NtClientTestState extends State<NtClientTest> {
                     }
                   });
                 }),
+            SizedBox(
+                width: 200,
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Topic Name',
+                  ),
+                  onChanged: (String name) {
+                    setTopicName = name;
+                  },
+                )),
+            SizedBox(
+                width: 200,
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Topic Value',
+                  ),
+                  onChanged: (String value) {
+                    setTopicValue = value;
+                  },
+                )),
             ElevatedButton(
                 onPressed: () async {
-                  ServerResponse res =
-                      await NTClient.setTopic(setTopicName, "", setValType);
-                  setState(() => serverRes = res);
+                  ServerResponse res = await NtClient.setTopic(
+                      setTopicName, setTopicValue, setValType);
+                  setState(() {
+                    serverRes = res;
+                    messageNum++;
+                  });
                 },
                 child: const Text("Click Me!"))
           ]),
           Row(
             children: [
               const Text("Get Topic"),
-              // TextFormField(
-              //   decoration: const InputDecoration(
-              //     border: UnderlineInputBorder(),
-              //     labelText: 'Topic Name',
-              //   ),
-              //   onChanged: (String name) {
-              //     topicName = name;
-              //   },
-              // ),
+              DropdownButton<ServerType>(
+                  value: setValType,
+                  items: ServerType.values.map((ServerType type) {
+                    return DropdownMenuItem<ServerType>(
+                        value: type, child: Text(type.toString()));
+                  }).toList(),
+                  onChanged: (ServerType? type) {
+                    setState(() {
+                      if (type != null) {
+                        getValType = type;
+                      }
+                    });
+                  }),
+              SizedBox(
+                width: 200,
+                child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Topic Name',
+                    ),
+                    onChanged: (String name) {
+                      getTopicName = name;
+                    }),
+              ),
               ElevatedButton(
                 child: const Text("Click Me!"),
                 onPressed: () async {
                   ServerResponse res =
-                      await NTClient.getTopic(getTopicName, getValType);
-                  setState(() => serverRes = res);
+                      await NtClient.getTopic(getTopicName, getValType);
+                  setState(() {
+                    serverRes = res;
+                    messageNum++;
+                  });
                 },
               )
             ],
-          )
+          ),
+          Row(children: [
+            Text(
+                "From Server: ${serverRes.message}, Message #: ${messageNum.toString()}")
+          ])
         ]));
   }
 }

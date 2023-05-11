@@ -17,9 +17,10 @@ class OperatorDashboard334 extends StatelessWidget {
     return MaterialApp(
         // Scaffold Widget
         home: Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         // AppBar takes a Text Widget in it's title parameter
-        title: const Text('OperatorDashboard334'), // once again, created at compile time
+        title: const Text(
+            'OperatorDashboard334'), // once again, created at compile time
       ),
       body: const NtClientTest(), // can be switched back to "home screen".
     ));

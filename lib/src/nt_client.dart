@@ -28,15 +28,26 @@ class ServerResponse {
   }
 }
 
-class NTClient {
+class NtClient {
+  /// To start the local HTTP NT Client
+  static Future<void> startHttpNt() async {}
+
+  /// Starts the NT Client on the HTTP Server using these parameters:
+  /// team -> The team to connect to.
   static Future<ServerResponse> startNtClient(int team) async {
     return ServerResponse.fromJson((await http.get(Uri.http(
             'localhost:8000', '/startNtClient', {"team": team.toString()})))
         .body);
   }
 
+  /// Set's a Topic on the NT Server using these parameters:
+  /// name -> The name of the Topic.
+  /// value -> A valid JSON string of the value being set.
+  /// type -> The ServerType of this value.
+  /// 
+  /// If the Topic does not exist on the NT Server, then it is created.
   static Future<ServerResponse> setTopic(
-      String name, dynamic value, ServerType type) async {
+      String name, String value, ServerType type) async {
     return ServerResponse.fromJson((await http.get(Uri.http(
             'localhost:8000',
             '/setTopic',
@@ -44,6 +55,9 @@ class NTClient {
         .body);
   }
 
+  /// Get's a Topic from the NT Server using these parameters:
+  /// name -> The name of the Topic.
+  /// type -> The ServerType of the Topic.
   static Future<ServerResponse> getTopic(String name, ServerType type) async {
     ServerResponse res = ServerResponse.fromJson((await http.get(Uri.http(
             'localhost:8000',
