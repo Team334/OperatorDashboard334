@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import '../nt_client.dart';
 
@@ -10,6 +12,7 @@ class NtClientTest extends StatefulWidget {
 
 class _NtClientTestState extends State<NtClientTest> {
   ServerResponse serverRes = ServerResponse("", false);
+  String serverData = "NONE";
 
   ServerType setValType = ServerType.string;
   ServerType getValType = ServerType.string;
@@ -40,6 +43,7 @@ class _NtClientTestState extends State<NtClientTest> {
                   ServerResponse res = await NtClient.startNtClient(334);
                   setState(() {
                     serverRes = res;
+                    serverData = "NONE";
                     messageNum++;
                   });
                 },
@@ -88,6 +92,7 @@ class _NtClientTestState extends State<NtClientTest> {
                       setTopicName, setTopicValue, setValType);
                   setState(() {
                     serverRes = res;
+                    serverData = "NONE";
                     messageNum++;
                   });
                 },
@@ -127,17 +132,17 @@ class _NtClientTestState extends State<NtClientTest> {
                       await NtClient.getTopic(getTopicName, getValType);
                   setState(() {
                     serverRes = res;
-                    print(serverRes.data);
+                    serverData = jsonEncode(
+                        res.data); // encode back into string for print
                     messageNum++;
                   });
                 },
               )
             ],
           ),
-          Row(children: [
-            Text(
-                "From Server: ${serverRes.message}, Message #: ${messageNum.toString()}")
-          ])
+          Row(children: [Text("Server Message: ${serverRes.message}")]),
+          Row(children: [Text("Server Data: $serverData")]),
+          Row(children: [Text("Message #: ${messageNum.toString()}")])
         ]));
   }
 }
