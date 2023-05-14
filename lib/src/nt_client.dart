@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
@@ -29,8 +30,29 @@ class ServerResponse {
 }
 
 class NtClient {
+  static bool started = false;
+  static late int pid;
+
   /// To start the local HTTP NT Client
-  static Future<void> startHttpNt() async {}
+  static Future<bool> startHttpNt() async {
+    try {
+      // for windows rn
+      Process process = await Process.start("./http_nt/http_nt-win.exe", []);
+      pid = process.pid;
+      started = true;
+      
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// To end the local HTTP NT Client
+  static Future<void> endHttpNt() async {
+    if (started) {
+      Process.killPid(pid);
+    }
+  }
 
   /// Starts the NT Client on the HTTP Server using these parameters:
   /// team -> The team to connect to.
@@ -44,7 +66,7 @@ class NtClient {
   /// name -> The name of the Topic.
   /// value -> A valid JSON string of the value being set.
   /// type -> The ServerType of this value.
-  /// 
+  ///
   /// If the Topic does not exist on the NT Server, then it is created.
   static Future<ServerResponse> setTopic(
       String name, String value, ServerType type) async {

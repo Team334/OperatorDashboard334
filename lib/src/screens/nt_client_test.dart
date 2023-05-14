@@ -27,6 +27,7 @@ class _NtClientTestState extends State<NtClientTest> {
   @override
   void initState() {
     super.initState();
+    NtClient.startHttpNt();
   }
 
   @override
